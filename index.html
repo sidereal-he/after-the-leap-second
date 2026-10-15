@@ -6541,9 +6541,11 @@ function bgmSrc(k) {
 // A "program" is one or more cues laid on the film timeline. A cue either starts its track at `from`,
 // or is back-timed (`back`) so that the track's own ending lands at that film time.
 // ch. 7's Emergent: its climax breaks off (track 193.3 s) 1.2 s after the closing title appears; and the first arc's start
-// near `o` moved to the nearest offset that puts the two arcs a whole number of bars apart (~108 bpm, a bar of 2.222 s)
+// near `o` moved to the nearest offset that puts the two arcs a whole number of bars apart. The bar is measured: 4 bars =
+// 8.998 s all through track 120–192 s (106.7 bpm). Until 2026-10-16 it was taken as 108 bpm (2.222 s), and the arcs
+// overlapped about half a beat apart — heard once line 48 was gone and the overlap fell in a pause of the narration.
 const emgEnd = () => SHOT.earthLast.t[0] + SHOT.earthLast.cueT[0][0] + (NARR ? VOICE_AT + vsec(7.26) : 7.6) + 1.2;
-const emgBars = o => { const BAR = 240 / 108, d = 193.3 - emgEnd() + SHOT.cgpm26.t[0] - o; return o + d - BAR * Math.round(d / BAR); };
+const emgBars = o => { const BAR = 2.2494, d = 193.3 - emgEnd() + SHOT.cgpm26.t[0] - o; return o + d - BAR * Math.round(d / BAR); };
 const PROGRAMS = [
   { id: 'edit', short: '편집 스코어', shortEn: 'Edited score', hint: 'Resonance → Emergent', lic: 'cc', cues: () => [
       { src: 'res', from: 0, to: SHOT.globe16.t[0], fout: 3.2 },                    // ch. 1–4: pulse and momentum
@@ -6558,14 +6560,14 @@ const PROGRAMS = [
       { src: 'starX', from: 0, to: SHOT.lod.t[0], fout: 3.0 },
       // the crisis (lines 36–42): Aphelion, entering just before its dark second section (108 s) as the shortest days come in
       { src: 'aphX', from: SHOT.lod.t[0] - .5, offset: 104, fin: 2.4, to: SHOT.cgpm26.t[0], fout: 3.4 },
-      // ch. 7 in two arcs (Emergent, ~108 bpm: a swelling phrase to ~122 s, the build 136–147, a high plateau to ~166,
+      // ch. 7 in two arcs (Emergent, 106.7 bpm: a swelling phrase to ~122 s, the build 136–147, a high plateau to ~166,
       // the climax layer from ~167.5, the break at 193.3). First the build rises under the 2027 decision and the drift of the
       // two times (lines 44–45), the plateau carries Korea's two midnights and thins out just before its climax; as it does,
-      // the second arc comes in under it — a whole number of bars (2.222 s) earlier in the track, so the beat runs on: the
+      // the second arc comes in under it — a whole number of bars (2.249 s) earlier in the track, so the beat runs on: the
       // first arc starts near track 124 s, nudged by under half a bar (emgBars) so that it always is, whatever the length of
-      // the film after cgpm26 (13 bars in October 2026) — and carries line 48 and the ending, timed so that the climax breaks
-      // off as the closing title appears and its coda plays on under the end card. (Until 2026-10-02 line 48 was left in a
-      // silence of its own; it stood out too much.)
+      // the film after cgpm26 (10 bars since 2026-10-16) — and carries the ending from line 48 on, timed so that the climax
+      // breaks off as the closing title appears and its coda plays on under the end card. (Until 2026-10-02 the old line 48,
+      // the almanac, was left in a silence of its own; it stood out too much. That line went on 2026-10-13.)
       { src: 'emgX', from: SHOT.cgpm26.t[0], offset: emgBars(124), fin: 2.6, to: SHOT.cgpm26.t[0] + 42.1, fout: 3.6 },
       { src: 'emgX', from: SHOT.cgpm26.t[0] + 42.1 - 3.6, fin: 3.6, anchor: { track: 193.3, film: emgEnd() } }] },
   { id: 'res', short: 'Resonance', lic: 'cc', cues: () => [{ src: 'res' }] },
